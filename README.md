@@ -65,10 +65,10 @@ ruff format --check .
 ### Збирання wheel і встановлення в чисте середовище
 
 ```
-python -m build                                     # dist/kzp_lab06-6.0.0-py3-none-any.whl
+python -m build                                     # dist/kzp_lab06-1.0.0-py3-none-any.whl
 python -m venv .venv-wheel
-.venv-wheel\Scripts\python -m pip install --no-deps dist\kzp_lab06-6.0.0-py3-none-any.whl   # Windows
-.venv-wheel/bin/python -m pip install --no-deps dist/kzp_lab06-6.0.0-py3-none-any.whl          # macOS, Ubuntu
+.venv-wheel\Scripts\python -m pip install --no-deps dist\kzp_lab06-1.0.0-py3-none-any.whl   # Windows
+.venv-wheel/bin/python -m pip install --no-deps dist/kzp_lab06-1.0.0-py3-none-any.whl          # macOS, Ubuntu
 .venv-wheel/bin/python -m kzp_lab06.cli data/input.csv reports/wheel-summary.txt --reference-date 2026-10-03
 kzp-lab06 data/input.csv reports/summary.txt        # встановлена команда
 ```
@@ -77,7 +77,7 @@ kzp-lab06 data/input.csv reports/summary.txt        # встановлена к�
 
 GitHub Actions (`.github/workflows/ci.yml`) на Ubuntu, Windows і macOS виконує `pytest`, `ruff check`, `ruff format --check`, збирає wheel, встановлює його в чисте середовище, перевіряє CLI (успіх — код 0, відсутній файл — код 2, пошкоджений CSV — код 1) і публікує wheel як артефакт.
 
-Версія зберігається лише в `pyproject.toml` (поточна — `6.0.0`); `kzp-lab06 --version` читає її з метаданих встановленого пакета. Git-тег має збігатися з нею: `v6.0.0`.
+Версія зберігається лише в `pyproject.toml` (поточна — `1.0.0`); `kzp-lab06 --version` читає її з метаданих встановленого пакета. Git-тег має збігатися з нею: `v1.0.0`.
 
 Без `--reference-date` береться сьогоднішня дата. Коди завершення: `0` — успіх, `1` — помилка даних (повідомлення в stderr), `2` — помилка файлу.
 

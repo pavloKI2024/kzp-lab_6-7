@@ -97,7 +97,7 @@
 ## 11. Якість та пакетування
 
 - `ruff check .` і `ruff format --check .` проходять без попереджень (правила `E`, `F`, `I`, `B`).
-- Wheel: `python -m build` → `dist/kzp_lab06-6.0.0-py3-none-any.whl`.
+- Wheel: `python -m build` → `dist/kzp_lab06-1.0.0-py3-none-any.whl`.
 - Встановлення в окреме чисте середовище без dev-залежностей: `python -m venv .venv-wheel`, `.venv-wheel/bin/python -m pip install --no-deps dist/<wheel>.whl` (Windows: `.venv-wheel\Scripts\python`). У середовищі з'являється лише `kzp-lab06 1.0.0`.
 - Перевірка встановленого пакета: `python -m kzp_lab06.cli data/input.csv reports/wheel-summary.txt --reference-date 2026-10-03` → код 0; встановлена команда `kzp-lab06 ...` → код 0 і ідентичний звіт; неіснуючий вхідний файл → повідомлення «Помилка файлу» і код 2.
 
@@ -113,7 +113,7 @@ Workflow `.github/workflows/ci.yml` запускається на кожен pus
 
 ### Версія і Git-тег
 
-Версія `6.0.0` задана лише в `pyproject.toml` (одне джерело); `kzp-lab06 --version` читає її з метаданих пакета, ім'я wheel формується з неї автоматично. Git-тег: `v6.0.0` — _вставте посилання_.
+Версія `1.0.0` задана лише в `pyproject.toml` (одне джерело); `kzp-lab06 --version` читає її з метаданих пакета, ім'я wheel формується з неї автоматично. Git-тег: `v1.0.0` — _вставте посилання_.
 
 ## 13. GitHub Issues і Pull Request
 
