@@ -37,6 +37,7 @@ jobs:
           if [ "$RUNNER_OS" = "Windows" ]; then PY=.venv-wheel/Scripts/python; else PY=.venv-wheel/bin/python; fi
           $PY -m pip install --no-deps dist/*.whl
           $PY -m kzp_lab06.cli --version
+          $PY -m kzp_lab07.cli --version
           # успішний сценарій: код 0
           $PY -m kzp_lab06.cli data/input.csv reports/wheel-summary.txt --reference-date 2026-10-03
           # помилковий сценарій: відсутній файл дає код 2
@@ -47,6 +48,14 @@ jobs:
           printf 'room,guest\n1,A\n' > broken.csv
           code=0
           $PY -m kzp_lab06.cli broken.csv reports/y.txt || code=$?
+          test "$code" -eq 1
+          # ЛР7: успішний сценарій і помилкові сценарії
+          $PY -m kzp_lab07.cli data/bookings.csv reports/wheel7.txt --reference-date 2026-10-03 --with-revenue
+          code=0
+          $PY -m kzp_lab07.cli data/missing.csv reports/x7.txt || code=$?
+          test "$code" -eq 2
+          code=0
+          $PY -m kzp_lab07.cli broken.csv reports/y7.txt || code=$?
           test "$code" -eq 1
       - uses: actions/upload-artifact@v4
         with:

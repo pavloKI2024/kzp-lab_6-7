@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kzp-lab06"
-version = "1.0.0"
-description = "Лабораторна робота № 6: обробка CSV засобами Python (варіант 14, Готель)"
+version = "2.0.0"
+description = "Лабораторні роботи № 6-7: обробка CSV та об'єктна модель на Python (варіант 14, Готель)"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
@@ -15,6 +15,7 @@ dev = ["pytest>=8", "ruff>=0.6", "build>=1.2"]
 
 [project.scripts]
 kzp-lab06 = "kzp_lab06.cli:main"
+kzp-lab07 = "kzp_lab07.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
