@@ -62,6 +62,17 @@ ruff check .
 ruff format --check .
 ```
 
+### Збирання wheel і встановлення в чисте середовище
+
+```
+python -m build                                     # dist/kzp_lab06-1.0.0-py3-none-any.whl
+python -m venv .venv-wheel
+.venv-wheel\Scripts\python -m pip install --no-deps dist\kzp_lab06-1.0.0-py3-none-any.whl   # Windows
+.venv-wheel/bin/python -m pip install --no-deps dist/kzp_lab06-1.0.0-py3-none-any.whl          # macOS, Ubuntu
+.venv-wheel/bin/python -m kzp_lab06.cli data/input.csv reports/wheel-summary.txt --reference-date 2026-10-03
+kzp-lab06 data/input.csv reports/summary.txt        # встановлена команда
+```
+
 Без `--reference-date` береться сьогоднішня дата. Коди завершення: `0` — успіх, `1` — помилка даних (повідомлення в stderr), `2` — помилка файлу.
 
 ## Приклад звіту

@@ -66,3 +66,32 @@ def test_cli_returns_nonzero_for_broken_csv(tmp_path: Path, capsys) -> None:
 
 def test_cli_returns_nonzero_for_missing_file(tmp_path: Path) -> None:
     assert main([str(tmp_path / "немає.csv"), str(tmp_path / "out.txt")]) == 2
+
+
+def test_report_contains_all_sections_for_real_data(tmp_path: Path) -> None:
+    output = tmp_path / "summary.txt"
+    main(
+        [
+            str(ROOT / "data" / "input.csv"),
+            str(output),
+            "--reference-date",
+            "2026-10-03",
+        ]
+    )
+
+    text = output.read_text(encoding="utf-8")
+
+    assert text.startswith("=== Звіт: Готель ===\n")
+    assert 'Гості: Іваненко Петро; Бондар "Макс" Максим; Коваль, Олена\n' in text
+    assert "  1200.50: 1\n" in text
+    assert text.endswith("\n")
+    assert "\r" not in text
+
+
+def test_cli_does_not_modify_input(tmp_path: Path) -> None:
+    source = ROOT / "data" / "input.csv"
+    before = source.read_bytes()
+
+    main([str(source), str(tmp_path / "out.txt"), "--reference-date", "2026-10-03"])
+
+    assert source.read_bytes() == before
