@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install dev dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Tests
+        run: python -m pytest
+      - name: Ruff check
+        run: ruff check .
+      - name: Ruff format check
+        run: ruff format --check .
+      - name: Build wheel
+        run: python -m build
+      - name: Smoke test wheel in a clean environment
+        run: |
+          python -m venv .venv-wheel
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=.venv-wheel/Scripts/python; else PY=.venv-wheel/bin/python; fi
+          $PY -m pip install --no-deps dist/*.whl
+          $PY -m kzp_lab06.cli --version
+          # успішний сценарій: код 0
+          $PY -m kzp_lab06.cli data/input.csv reports/wheel-summary.txt --reference-date 2026-10-03
+          # помилковий сценарій: відсутній файл дає код 2
+          code=0
+          $PY -m kzp_lab06.cli data/missing.csv reports/x.txt || code=$?
+          test "$code" -eq 2
+          # помилковий сценарій: пошкоджений CSV дає код 1
+          printf 'room,guest\n1,A\n' > broken.csv
+          code=0
+          $PY -m kzp_lab06.cli broken.csv reports/y.txt || code=$?
+          test "$code" -eq 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.os }}-${{ github.run_number }}
+          path: dist/*.whl
+          if-no-files-found: error

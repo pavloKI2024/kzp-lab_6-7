@@ -3,6 +3,7 @@
 import argparse
 import sys
 from datetime import date
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 from kzp_lab06.analysis import make_summary
@@ -15,10 +16,21 @@ EXIT_DATA_ERROR = 1
 EXIT_FILE_ERROR = 2
 
 
+def get_version() -> str:
+    """Повертає версію пакета з його метаданих (джерело — pyproject.toml)."""
+    try:
+        return version("kzp-lab06")
+    except PackageNotFoundError:
+        return "unknown"
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Створює парсер аргументів командного рядка."""
     parser = argparse.ArgumentParser(
         prog="kzp-lab06", description="Звіт за бронюваннями готелю з CSV."
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {get_version()}"
     )
     parser.add_argument("input", type=Path, help="вхідний CSV")
     parser.add_argument("output", type=Path, help="файл текстового звіту")
