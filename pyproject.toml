@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kzp-lab06"
-version = "1.0.0"
+version = "6.0.0"
 description = "Лабораторна робота № 6: обробка CSV засобами Python (варіант 14, Готель)"
 readme = "README.md"
 requires-python = ">=3.11"

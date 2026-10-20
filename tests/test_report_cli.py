@@ -3,8 +3,10 @@
 from datetime import date
 from pathlib import Path
 
+import pytest
+
 from kzp_lab06.analysis import make_summary
-from kzp_lab06.cli import main
+from kzp_lab06.cli import get_version, main
 from kzp_lab06.reporting import format_report, write_report
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -95,3 +97,11 @@ def test_cli_does_not_modify_input(tmp_path: Path) -> None:
     main([str(source), str(tmp_path / "out.txt"), "--reference-date", "2026-10-03"])
 
     assert source.read_bytes() == before
+
+
+def test_cli_version_comes_from_package_metadata(capsys) -> None:
+    with pytest.raises(SystemExit) as exit_info:
+        main(["--version"])
+
+    assert exit_info.value.code == 0
+    assert capsys.readouterr().out.strip() == f"kzp-lab06 {get_version()}"
